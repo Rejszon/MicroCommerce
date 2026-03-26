@@ -1,0 +1,7 @@
+# Ignoruj główne ustawienia IDE
+.idea/
+*.iml
+
+# Ignoruj pliki systemowe
+.DS_Store
+Thumbs.db
