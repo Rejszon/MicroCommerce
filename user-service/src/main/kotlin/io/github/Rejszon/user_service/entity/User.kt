@@ -1,5 +1,6 @@
 package io.github.Rejszon.user_service.entity
 
+import io.github.Rejszon.user_service.model.UserDTO
 import io.github.Rejszon.user_service.model.UserRole
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -26,3 +27,5 @@ class User(
     @Column(nullable = false)
     val role: UserRole,
 )
+
+fun User.toDTO() = UserDTO(requireNotNull(id), email, role)
