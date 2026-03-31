@@ -25,7 +25,7 @@ class User(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: UserRole,
+    var role: UserRole,
 )
 
 fun User.toDTO() = UserDTO(requireNotNull(id), email, role)

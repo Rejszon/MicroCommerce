@@ -26,7 +26,6 @@ class JwtAuthenticationFilter(
             chain.doFilter(req, res)
             return
         }
-        println("here")
         val jwt = authHeader.substring("Bearer ".length)
         val emailFromToken = jwtService.validateToken(jwt)
         if(emailFromToken != null ){
