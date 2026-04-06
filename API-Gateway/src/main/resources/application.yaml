@@ -1,3 +1,27 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: API-Gateway
+  profiles:
+    include: secrets
+    cloud:
+      gateway:
+        routes:
+          - id: user-service-auth
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/api/auth/**
+          - id: user-service-protected
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/api/users/**
+            filters:
+              - JwtAuthenticationFilter
+#          - id: order-service
+#            uri: lb://ORDER-SERVICE
+#            predicates:
+#              - Path=/api/orders/**
+#            filters:
+#              - JwtAuthenticationFilter
