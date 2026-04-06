@@ -6,22 +6,27 @@ spring:
     name: API-Gateway
   profiles:
     include: secrets
-    cloud:
-      gateway:
-        routes:
-          - id: user-service-auth
-            uri: lb://USER-SERVICE
-            predicates:
-              - Path=/api/auth/**
-          - id: user-service-protected
-            uri: lb://USER-SERVICE
-            predicates:
-              - Path=/api/users/**
-            filters:
-              - JwtAuthenticationFilter
-#          - id: order-service
-#            uri: lb://ORDER-SERVICE
-#            predicates:
-#              - Path=/api/orders/**
-#            filters:
-#              - JwtAuthenticationFilter
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service-auth
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/auth/**
+            - id: user-service-protected
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - JwtAuthenticationFilter
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: DEBUG

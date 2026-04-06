@@ -25,41 +25,13 @@ class JwtService(
     fun generateToken(user: User): String{
         return Jwts.builder()
             .issuer("user-service")
-            .subject(user.email)
+            .subject(user.id.toString())
             .claim("role",user.role)
             .claim("userId",user.id)
             .issuedAt(Date())
             .expiration(Date(Date().time + expiration))
             .signWith(key)
             .compact()
-    }
-    fun validateToken(token: String): String?{
-        return try {
-            val jwt = Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .payload
-
-            jwt.subject
-        }
-        catch (ex: Exception){
-            null
-        }
-    }
-
-    //Converts my User object into userDetailsService object needed for spring security
-    @Bean
-    fun userDetailsService(): UserDetailsService {
-        return UserDetailsService {email ->
-            val user = userRepository.findByEmail(email)
-                ?: throw UsernameNotFoundException("User not found")
-            org.springframework.security.core.userdetails.User.builder()
-                .username(user.email)
-                .password(user.password)
-                .roles(user.role.name)
-                .build()
-        }
     }
 
 
